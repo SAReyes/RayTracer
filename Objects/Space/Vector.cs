@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 
-namespace Objects.World.Space
+namespace Raytracer.World.Space
 {
     public class Vector : Coordinate
     {

@@ -1,4 +1,4 @@
-﻿namespace Objects.World.Util
+﻿namespace Raytracer.World.Util
 {
     public class Surface
     {
