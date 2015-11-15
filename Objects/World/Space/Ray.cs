@@ -23,7 +23,7 @@
 
         public override string ToString()
         {
-            return $"Ray[Origin={Origin}, Direction={Direction}";
+            return $"Ray[Origin={Origin}, Direction={Direction}]";
         }
     }
 }

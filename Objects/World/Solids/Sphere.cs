@@ -9,25 +9,17 @@ namespace Objects.World.Solids
         public Point Center { get; set; }
         public double Radius { get; set; }
 
-        public override Vector Normal(Point point)
-        {
-            return point - Center;
-        }
-
         //TODO: Tolerance
         public override Intersection Intersected(Ray ray)
         {
-            var intersection = new Intersection
-            {
-                Thing = this
-            };
+            var intersection = new Intersection { Thing = this };
 
             var d = ray.Origin - Center;
             var b = d.Dot(ray.Direction);
-            var c = d.Dot(d) - Radius*Radius;
+            var c = d.Dot(d) - Radius * Radius;
 
-            var disc = b*b - c;
-            if (disc < 0.02)
+            var disc = b * b - c;
+            if (disc < Globals.EPSILON)
             {
                 return Intersection.None;
             }
@@ -37,26 +29,26 @@ namespace Objects.World.Solids
 
             Point origin;
 
-            if (disc > 0.02)
+            if (disc > Globals.EPSILON)
             {
-                if (l1 < 0.02 && l2 < 0.02)
+                if (l1 < Globals.EPSILON && l2 < Globals.EPSILON)
                 {
                     return Intersection.None;
                 }
 
-                if (l1 > 0.02 && l2 < 0.02)
+                if (l1 > Globals.EPSILON && l2 < Globals.EPSILON)
                 {
                     origin = ray.Point(l1);
-                    intersection.Ray = new Ray
+                    intersection.Normal = new Ray
                     {
                         Origin = origin,
                         Direction = origin - Center
                     };
                 }
-                if (l1 > l2 && l2 > 0.02)
+                if (l1 > l2 && l2 > Globals.EPSILON)
                 {
                     origin = ray.Point(l2);
-                    intersection.Ray = new Ray
+                    intersection.Normal = new Ray
                     {
                         Origin = origin,
                         Direction = origin - Center
@@ -70,7 +62,7 @@ namespace Objects.World.Solids
             else
             {
                 origin = ray.Point(l1);
-                intersection.Ray = new Ray
+                intersection.Normal = new Ray
                 {
                     Origin = origin,
                     Direction = origin - Center

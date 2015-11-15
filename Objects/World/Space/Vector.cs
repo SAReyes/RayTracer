@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Objects.World.Space
 {
@@ -26,6 +27,11 @@ namespace Objects.World.Space
             X = p2.X - p1.X;
             Y = p2.Y - p1.Y;
             Z = p2.Z - p1.Z;
+        }
+
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y, -v.Z);
         }
 
         public double Module()

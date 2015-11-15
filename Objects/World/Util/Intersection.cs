@@ -15,15 +15,15 @@ namespace Objects.World.Util
     public class Intersection
     {
         public Thing Thing { get; set; }
-        public Ray Ray { get; set; }
+        public Ray Normal { get; set; }
 
-        public bool Intersected => Thing != null && Ray != null;
+        public bool Intersected => Thing != null && Normal != null;
 
         public override string ToString()
         {
-            return $"Intersection[Intersected={Intersected}, Ray={Ray}, Thing={Thing}]";
+            return $"Intersection[Intersected={Intersected}, Normal={Normal}, Thing={Thing}]";
         }
 
-        public static Intersection None { get { return new Intersection(); } }
+        public static Intersection None => new Intersection();
     }
 }

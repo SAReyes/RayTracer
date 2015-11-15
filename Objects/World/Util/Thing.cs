@@ -6,7 +6,6 @@ namespace Objects.World.Util
     {
         public Surface Surface { get; set; }
 
-        public abstract Vector Normal(Point point);
         public abstract Intersection Intersected(Ray ray);
     }
 }

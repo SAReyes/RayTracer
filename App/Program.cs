@@ -9,26 +9,27 @@ namespace App
     {
         static void Main(string[] args)
         {
-            var sphere = new Sphere
+            var plane = new Plane
             {
-                Center = new Point(0,0,0),
-                Radius = 5,
-                Surface = new Surface
+                Definition = new Ray
                 {
-                    Diffuse = new Color(0.5,0.5,0.5),
-                    Reflection = 0.9,
-                },
+                    Direction = new Vector(1, 0, 0),
+                    Origin = new Point()
+                }
             };
 
             var ray = new Ray
             {
-                Origin = new Point(10, 0, 1),
-                Direction = new Vector(-1, 0 ,0)
+                Direction = new Vector(-2, 0, 0),
+                Origin = new Point(10, 0, 0)
             };
 
-            Console.WriteLine(sphere);
+            Console.WriteLine(plane);
+            Console.WriteLine();
             Console.WriteLine(ray);
-            Console.WriteLine(sphere.Intersected(ray));
+            Console.WriteLine();
+            Console.WriteLine(plane.Intersected(ray));
+
             Console.ReadLine();
         }
     }

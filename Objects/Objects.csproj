@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="World\Globals.cs" />
+    <Compile Include="World\Solids\Plane.cs" />
     <Compile Include="World\Util\Intersection.cs" />
     <Compile Include="World\Util\Surface.cs" />
     <Compile Include="World\Util\Thing.cs" />
