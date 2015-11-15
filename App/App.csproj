@@ -50,7 +50,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Objects\RayTracer.World.csproj">
+    <ProjectReference Include="..\RayTracer.World\RayTracer.World.csproj">
       <Project>{c42c4886-a390-4de5-970d-eacd94a1f3eb}</Project>
       <Name>RayTracer.World</Name>
     </ProjectReference>

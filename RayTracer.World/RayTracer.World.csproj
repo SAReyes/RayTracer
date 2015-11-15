@@ -54,6 +54,7 @@
     <Compile Include="Space\Point.cs" />
     <Compile Include="Space\Ray.cs" />
     <Compile Include="Space\Vector.cs" />
+    <Compile Include="Viewport.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
