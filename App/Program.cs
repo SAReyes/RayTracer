@@ -1,7 +1,7 @@
 ﻿using System;
-using Objects.World.Solids;
-using Objects.World.Space;
-using Objects.World.Util;
+using Raytracer.World;
+using Raytracer.World.Solids;
+using Raytracer.World.Space;
 
 namespace App
 {
@@ -9,26 +9,9 @@ namespace App
     {
         static void Main(string[] args)
         {
-            var plane = new Plane
-            {
-                Definition = new Ray
-                {
-                    Direction = new Vector(1, 0, 0),
-                    Origin = new Point()
-                }
-            };
+            var camera = new Camera(new Point(0, 0, 0), new Vector(0, -1, -1));
 
-            var ray = new Ray
-            {
-                Direction = new Vector(-2, 0, 0),
-                Origin = new Point(10, 0, 0)
-            };
-
-            Console.WriteLine(plane);
-            Console.WriteLine();
-            Console.WriteLine(ray);
-            Console.WriteLine();
-            Console.WriteLine(plane.Intersected(ray));
+            Console.WriteLine(camera);
 
             Console.ReadLine();
         }

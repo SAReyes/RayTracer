@@ -1,4 +1,4 @@
-﻿namespace Objects.World
+﻿namespace Raytracer.World
 {
     public class Globals
     {

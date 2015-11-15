@@ -1,7 +1,7 @@
-﻿using Objects.World.Space;
-using Objects.World.Util;
+﻿using Raytracer.World.Space;
+using Raytracer.World.Util;
 
-namespace Objects.World.Solids
+namespace Raytracer.World.Solids
 {
     public class Plane : Thing
     {

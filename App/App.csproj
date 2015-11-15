@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Objects\Objects.csproj">
+    <ProjectReference Include="..\Objects\RayTracer.World.csproj">
       <Project>{c42c4886-a390-4de5-970d-eacd94a1f3eb}</Project>
-      <Name>Objects</Name>
+      <Name>RayTracer.World</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

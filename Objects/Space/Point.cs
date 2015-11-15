@@ -1,4 +1,4 @@
-﻿namespace Objects.World.Space
+﻿namespace Raytracer.World.Space
 {
     public class Point : Coordinate
     {

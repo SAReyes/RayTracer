@@ -1,6 +1,6 @@
-﻿using Objects.World.Space;
+﻿using Raytracer.World.Space;
 
-namespace Objects.World.Util
+namespace Raytracer.World.Util
 {
     public abstract class Thing
     {
