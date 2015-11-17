@@ -37,5 +37,6 @@ namespace Raytracer.World
         {
             return $"Camera=[Position={Position}, Viewport={Viewport}, F={F}, U={U}, V={V}, W={W}]";
         }
+        
     }
 }
