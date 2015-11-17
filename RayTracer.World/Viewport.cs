@@ -2,7 +2,7 @@
 {
     public class Viewport
     {
-        public int Width { get; set; } 
+        public int Width { get; set; }
         public int Height { get; set; }
 
         public Viewport(int width, int height)
