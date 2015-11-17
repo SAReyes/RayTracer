@@ -15,7 +15,7 @@ namespace Raytracer.World
         public Camera(Point position, double f, Viewport viewport, Vector g) : this(position, g)
         {
             F = f;
-            this.Viewport = viewport;
+            Viewport = viewport;
         }
 
         public Camera(Point position, Vector g)
