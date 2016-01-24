@@ -13,11 +13,11 @@ namespace Raytracer.World
         public Vector V { get; }
         public Vector W { get; }
 
-        private double _l;
-        private double _t;
+        private readonly double _l;
+        private readonly double _t;
 
-        private double _du;
-        private double _dv;
+        private readonly double _du;
+        private readonly double _dv;
 
         public Camera(Point position, double f, Viewport viewport, Vector g) : this(position, g)
         {
@@ -46,9 +46,36 @@ namespace Raytracer.World
             _dv = Viewport.Height / (double)(Viewport.Height - 1);
         }
 
+        /// <summary>
+        /// Retrieves a Pixel in the camera world reference
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
         public Point Pixel(int i, int j)
         {
             return new Point(-_l + j * _du, -_t + i * _dv, -F);
+        }
+
+        public Ray Ray(int i, int j)
+        {
+            return new Ray
+            {
+                Origin = Position,
+                Direction = Pixel(i,j) - Position
+            };
+        }
+
+        public Matrix TranformationMatrix()
+        {
+            var matrix = new Matrix(4, 4)
+            {
+                [0] = U.Array(),
+                [1] = V.Array(),
+                [2] = W.Array(),
+                [3] = Position.Array()
+            };
+            return matrix;
         }
 
         public override string ToString()

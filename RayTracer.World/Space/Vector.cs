@@ -28,6 +28,21 @@ namespace Raytracer.World.Space
             Z = p2.Z - p1.Z;
         }
 
+        public double[] Array()
+        {
+            return new[] { X, Y, Z, 0 };
+        }
+
+        public Vector Transform(Matrix tm)
+        {
+            return new Vector
+            {
+                X = tm[0][0] * X + tm[1][0] * Y + tm[2][0] * Z, 
+                Y = tm[0][1] * X + tm[1][1] * Y + tm[2][1] * Z,
+                Z = tm[0][2] * X + tm[1][2] * Y + tm[2][2] * Z
+            };
+        }
+
         public static Vector operator -(Vector v)
         {
             return new Vector(-v.X, -v.Y, -v.Z);

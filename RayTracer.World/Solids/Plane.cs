@@ -45,6 +45,14 @@ namespace Raytracer.World.Solids
             return intersection;
         }
 
+        public Plane Transform(Matrix tm)
+        {
+            return new Plane
+            {
+                Definition = Definition.Transform(tm)
+            };
+        }
+
         public override string ToString()
         {
             return $"Plane=[Definition={Definition}]";

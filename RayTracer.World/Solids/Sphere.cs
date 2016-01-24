@@ -72,6 +72,20 @@ namespace Raytracer.World.Solids
             return intersection;
         }
 
+        public Sphere Transform(Matrix tm)
+        {
+            var radius = Math.Abs(tm[0][0] - tm[1][1]) < Globals.EPSILON && Math.Abs(tm[1][1] - tm[2][2]) < Globals.EPSILON ?
+                Radius * tm[0][0] : Radius;
+
+            return new Sphere
+            {
+                Radius = radius,
+                Center = Center.Transform(tm),
+                Surface = Surface
+            };
+        }
+
+
         public override string ToString()
         {
             return $"Sphere[Center={Center}, Radius={Radius}, Surface={Surface}";

@@ -11,6 +11,15 @@
             set { _direction = value.Normalize(); }
         }
 
+        public Ray Transform(Matrix tm)
+        {
+            return new Ray
+            {
+                Direction = Direction.Transform(tm),
+                Origin = Origin.Transform(tm)
+            };
+        }
+
         public Point Point(double scalar)
         {
             return new Point

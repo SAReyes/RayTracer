@@ -45,6 +45,8 @@
     <Compile Include="Light.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Solids\Plane.cs" />
+    <Compile Include="Space\Matrix.cs" />
+    <Compile Include="Space\TransformationMatrix.cs" />
     <Compile Include="Util\Intersection.cs" />
     <Compile Include="Util\Surface.cs" />
     <Compile Include="Util\Thing.cs" />
