@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Raytracer.World;
 using Raytracer.World.Solids;
 using Raytracer.World.Space;
@@ -13,25 +14,51 @@ namespace App
             var s = new Sphere
             {
                 Center = new Point(0, 0, 0),
-                Radius = 20.0,
+                Radius = 500,
                 Surface = new Surface
                 {
-                    Diffuse = new Color(0.5, 0.5, 0.5),
-                    Reflection = 0
+                    Color = new Color(0, 1, 0),
+                    RefractiveIndex = 0
                 }
             };
-            Console.WriteLine(s);
-
-            var m = new Matrix()
+            var p = new Plane
             {
-                [0] = new Vector(2, 0, 0).Array(),
-                [1] = new Vector(0, 2, 0).Array(),
-                [2] = new Vector(0, 0, 2).Array(),
-                [3] = new Point(0, 20, 0).Array(),
+                Definition = new Ray
+                {
+                    Direction = new Vector(0, 1, 0),
+                    Origin = new Point(0, 0, 0)
+                },
+                Surface = new Surface
+                {
+                    Color = new Color(0.8,0.8,0.8),
+                    RefractiveIndex = 0
+                }
             };
-            Console.WriteLine(s.Transform(m));
+            var l = new Light
+            {
+                Intensity = 600,
+                Position = new Point(-400, 1000, 1000)
+            };
 
-            Console.ReadLine();
+            var things = new List<Thing>();
+            var lights = new List<Light>();
+
+            things.Add(s);
+//            things.Add(p);
+            lights.Add(l);
+
+            var c = new Camera(new Point(0, 0, 800), new Vector(0, 0, -1));
+
+            var scene = new Scene
+            {
+                Camera = c,
+                Lights = lights,
+                Objects = things
+            };
+
+            RayTracer.RayTracer.Compute(scene);
+
+            Console.WriteLine("Completed!");
         }
     }
 }

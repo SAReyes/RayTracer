@@ -17,7 +17,7 @@ namespace Raytracer.World.Space
 
         public double[] Array()
         {
-            return new[] { X, Y, Z, 1};
+            return new[] { X, Y, Z, 1 };
         }
 
         public static Point operator +(Point p1, Point p2)
@@ -39,10 +39,15 @@ namespace Raytracer.World.Space
             var h = tm[0][3] + tm[1][3] + tm[2][3] + tm[3][3];
             return new Point
             {
-                X = x/h,
-                Y = y/h,
-                Z = z/h
+                X = x / h,
+                Y = y / h,
+                Z = z / h
             };
+        }
+
+        public double Distance(Point p)
+        {
+            return Math.Sqrt((X - p.X) * (X - p.X) + (Y - p.Y) * (Y - p.Y) + (Z - p.Z) * (Z - p.Z));
         }
 
         public override string ToString()

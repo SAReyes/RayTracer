@@ -10,9 +10,9 @@ namespace Raytracer.World.Solids
         public double Radius { get; set; }
 
         //TODO: Tolerance
-        public override Intersection Intersected(Ray ray)
+        public override bool Intersected(Ray ray, out Intersection intersection)
         {
-            var intersection = new Intersection { Thing = this };
+            intersection = new Intersection { Object = this };
 
             var d = ray.Origin - Center;
             var b = d.Dot(ray.Direction);
@@ -21,7 +21,8 @@ namespace Raytracer.World.Solids
             var disc = b * b - c;
             if (disc < Globals.EPSILON)
             {
-                return Intersection.None;
+                intersection = Intersection.None;
+                return false;
             }
 
             var l1 = -b + Math.Sqrt(disc);
@@ -33,7 +34,8 @@ namespace Raytracer.World.Solids
             {
                 if (l1 < Globals.EPSILON && l2 < Globals.EPSILON)
                 {
-                    return Intersection.None;
+                    intersection = Intersection.None;
+                    return false;
                 }
 
                 if (l1 > Globals.EPSILON && l2 < Globals.EPSILON)
@@ -56,7 +58,8 @@ namespace Raytracer.World.Solids
                 }
                 else
                 {
-                    return Intersection.None;
+                    intersection = Intersection.None;
+                    return false;
                 }
             }
             else
@@ -67,9 +70,10 @@ namespace Raytracer.World.Solids
                     Origin = origin,
                     Direction = origin - Center
                 };
+                intersection.Distance = ray.Origin.Distance(origin);
             }
 
-            return intersection;
+            return true;
         }
 
         public Sphere Transform(Matrix tm)

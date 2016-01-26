@@ -54,16 +54,22 @@ namespace Raytracer.World
         /// <returns></returns>
         public Point Pixel(int i, int j)
         {
-            return new Point(-_l + j * _du, -_t + i * _dv, -F);
+            return new Point(-_l + j * _du, _t - i * _dv, -F);
         }
+
 
         public Ray Ray(int i, int j)
         {
             return new Ray
             {
                 Origin = Position,
-                Direction = Pixel(i,j) - Position
+                Direction = Pixel(i, j).Transform(TranformationMatrix()) - Position
             };
+        }
+
+        public Ray WorldRay(int i, int j)
+        {
+            return Ray(i, j);
         }
 
         public Matrix TranformationMatrix()
@@ -81,6 +87,11 @@ namespace Raytracer.World
         public override string ToString()
         {
             return $"Camera=[Position={Position}, Viewport={Viewport}, F={F}, U={U}, V={V}, W={W}]";
+        }
+
+        private Point DisplacementArray()
+        {
+            return new Point(Position.X, Position.Y, -Position.Z);
         }
 
     }

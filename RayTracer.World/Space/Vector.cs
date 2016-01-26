@@ -37,15 +37,30 @@ namespace Raytracer.World.Space
         {
             return new Vector
             {
-                X = tm[0][0] * X + tm[1][0] * Y + tm[2][0] * Z, 
+                X = tm[0][0] * X + tm[1][0] * Y + tm[2][0] * Z,
                 Y = tm[0][1] * X + tm[1][1] * Y + tm[2][1] * Z,
                 Z = tm[0][2] * X + tm[1][2] * Y + tm[2][2] * Z
             };
         }
 
+        public Point Point()
+        {
+            return new Point(X, Y, Z);
+        }
+
         public static Vector operator -(Vector v)
         {
             return new Vector(-v.X, -v.Y, -v.Z);
+        }
+
+        public static Vector operator -(Vector v1, Vector v2)
+        {
+            return new Vector(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+        }
+
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector(k * v.X, k * v.Y, k * v.Z);
         }
 
         public double Module()
@@ -58,9 +73,9 @@ namespace Raytracer.World.Space
             var module = Module();
             return new Vector
             {
-                X = X/module,
-                Y = Y/module,
-                Z = Z/module
+                X = X / module,
+                Y = Y / module,
+                Z = Z / module
             };
         }
 

@@ -9,9 +9,9 @@ namespace Raytracer.World.Solids
         public Ray Definition { get; set; }
         public Vector Normal => Definition.Direction;
 
-        public override Intersection Intersected(Ray ray)
+        public override bool Intersected(Ray ray, out Intersection intersection)
         {
-            var intersection = new Intersection { Thing = this, Normal = new Ray() };
+            intersection = new Intersection { Object = this, Normal = new Ray() };
 
             var prodEsc = ray.Direction.Dot(Normal);
 
@@ -25,7 +25,8 @@ namespace Raytracer.World.Solids
             }
             else
             {
-                return Intersection.None;
+                intersection = Intersection.None;
+                return false;
             }
 
             var lambda = -(
@@ -33,7 +34,11 @@ namespace Raytracer.World.Solids
                 Normal.Y * ray.Origin.Y +
                 Normal.Z * ray.Origin.Z) / prodEsc;
 
-            if (lambda < Globals.EPSILON) { return Intersection.None; }
+            if (lambda < Globals.EPSILON)
+            {
+                intersection = Intersection.None;
+                return false;
+            }
 
             intersection.Normal.Origin = new Point
             {
@@ -41,8 +46,9 @@ namespace Raytracer.World.Solids
                 Y = ray.Origin.Y + lambda * ray.Direction.Y,
                 Z = ray.Origin.Z + lambda * ray.Direction.Z
             };
+            intersection.Distance = ray.Origin.Distance(intersection.Point);
 
-            return intersection;
+            return true;
         }
 
         public Plane Transform(Matrix tm)
