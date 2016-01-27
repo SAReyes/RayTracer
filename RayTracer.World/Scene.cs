@@ -34,8 +34,8 @@ namespace Raytracer.World
             }
 
             // TODO: Return amb coef?
-            if (intersection == null) return new Color();
-            if (!intersection.Intersected) return new Color();
+            if (intersection == null) return Globals.WORLD_COLOR;
+            if (!intersection.Intersected) return Globals.WORLD_COLOR;
 
             if (intersection.Object.Translucent && recursion < Globals.MAX_RECURSION)
             {
