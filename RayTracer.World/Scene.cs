@@ -78,7 +78,11 @@ namespace Raytracer.World
 
                 if (!blocked)
                 {
-                    color = color + intersection.Object.Surface.Color * intersection.Normal.Direction.Dot(shadowRay.Direction);
+                    Color diffuse = intersection.Object.Surface.Color *
+                                    intersection.Normal.Direction.Dot(shadowRay.Direction) *
+                                    light.IntensityFactor(intersection.Point);
+                    
+                    color = color + diffuse;
                 }
             }
 

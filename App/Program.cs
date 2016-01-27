@@ -36,7 +36,7 @@ namespace App
             };
             var l = new Light
             {
-                Intensity = 600,
+                Intensity = 1000000,
                 Position = new Point(-400, 1000, 1000)
             };
 
