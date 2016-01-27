@@ -18,7 +18,9 @@ namespace App
                 Surface = new Surface
                 {
                     Color = new Color(0, 1, 0),
-                    RefractiveIndex = 0
+                    RefractiveIndex = 0,
+                    SpecularN = 10,
+                    SpecularCoef = 0.5
                 }
             };
             var p = new Plane

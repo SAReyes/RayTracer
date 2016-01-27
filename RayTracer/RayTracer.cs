@@ -39,7 +39,7 @@ namespace RayTracer
                 for (var j = 0; j < width; j++)
                 {
                     var ray = scene.Camera.WorldRay(i, j);
-                    if (i == 250 & j == 400)
+                    if (i == 270 & j == 370)
                     {
                         Console.Write("derp \r");
                     }
