@@ -14,7 +14,6 @@ namespace Raytracer.World.Util
 
         public bool Delta => Math.Abs(ReflectanceIndex) > Globals.EPSILON || Math.Abs(RefractiveIndex) > Globals.EPSILON;
         
-
         public override string ToString()
         {
             return $"Surface[Diffuse={Color}, Reflection={ReflectanceIndex}]";

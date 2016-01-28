@@ -85,7 +85,6 @@ namespace App
                 Radius = 400,
                 Surface = new Surface
                 {
-
                     Color = new Color(0, 0, 1),
                     RefractiveIndex = 1.9,
                     SpecularCoef = 1
