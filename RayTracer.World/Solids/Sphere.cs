@@ -41,20 +41,10 @@ namespace Raytracer.World.Solids
                 if (l1 > Globals.EPSILON && l2 < Globals.EPSILON)
                 {
                     origin = ray.Point(l1);
-                    intersection.Normal = new Ray
-                    {
-                        Origin = origin,
-                        Direction = origin - Center
-                    };
                 }
-                if (l1 > l2 && l2 > Globals.EPSILON)
+                else if (l1 > l2 && l2 > Globals.EPSILON)
                 {
                     origin = ray.Point(l2);
-                    intersection.Normal = new Ray
-                    {
-                        Origin = origin,
-                        Direction = origin - Center
-                    };
                 }
                 else
                 {
@@ -65,13 +55,13 @@ namespace Raytracer.World.Solids
             else
             {
                 origin = ray.Point(l1);
-                intersection.Normal = new Ray
-                {
-                    Origin = origin,
-                    Direction = origin - Center
-                };
-                intersection.Distance = ray.Origin.Distance(origin);
             }
+            intersection.Distance = ray.Origin.Distance(origin);
+            intersection.Normal = new Ray
+            {
+                Origin = origin,
+                Direction = origin - Center
+            };
 
             return true;
         }
@@ -89,6 +79,26 @@ namespace Raytracer.World.Solids
             };
         }
 
+        protected bool Equals(Sphere other)
+        {
+            return Equals(Center, other.Center) && Radius.Equals(other.Radius);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Sphere) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Center != null ? Center.GetHashCode() : 0)*397) ^ Radius.GetHashCode();
+            }
+        }
 
         public override string ToString()
         {

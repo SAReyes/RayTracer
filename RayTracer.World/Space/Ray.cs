@@ -13,6 +13,11 @@ namespace Raytracer.World.Space
             set { _direction = value.Normalize(); }
         }
 
+        public Ray()
+        {
+            Origin = new Point();
+        }
+
         public Ray Transform(Matrix tm)
         {
             return new Ray
@@ -43,37 +48,38 @@ namespace Raytracer.World.Space
 
         public Ray Refraction(Ray normal, double coef, bool inside = false)
         {
-            var n = inside ? coef : 1 / coef;
-            var r = -Direction;
-            var ni = normal.Direction.Dot(r);
-            var t1 = n * ni - Math.Sqrt(1 - n * n * (1 - ni * ni));
-            var left = normal.Direction * t1;
-            var right = r * n;
+            var updatedNormal = inside ? -normal.Direction : normal.Direction;
+            var nt = inside ? coef : 1 / coef;
+            var ray = -Direction;
+            var nDotI = updatedNormal.Dot(ray);
+            var scalar = nt * nDotI - Math.Sqrt(1 - nt * nt * (1 - nDotI * nDotI));
+            var leftTerm = updatedNormal * scalar;
+            var rightTerm = ray * nt;
             return new Ray
             {
-                Direction = left - right,
+                Direction = leftTerm - rightTerm,
                 Origin = normal.Origin
             };
         }
 
-        public void Fresnel(Ray normal, Ray refracted, double coef, out double k_refl, out double k_refr,
-            bool inside = false)
+        public static Ray operator *(Ray r, double k)
         {
-            var n1 = inside ? coef : 1;
-            var n2 = inside ? 1 : coef;
-
-            var cos_i = (-Direction).Dot(normal.Direction);
-            var cos_t = refracted.Direction.Dot(-normal.Direction);
-
-            var _rs = Math.Abs((n1 * cos_i - n2 * cos_t) / (n1 * cos_i + n2 * cos_t));
-            var _rp = Math.Abs((n1 * cos_t - n2 * cos_i) / (n1 * cos_t + n2 * cos_i));
-
-            var rs = _rs * _rs;
-            var rp = _rp * _rp;
-
-            k_refl = (rs + rp) /2;
-            k_refr = 1 - k_refl;
+            return new Ray
+            {
+                Origin = r.Origin,
+                Direction = new Vector(k * r.Direction.X, k * r.Direction.Y, k * r.Direction.Z)
+            };
         }
+
+        public static Ray operator -(Ray r)
+        {
+            return new Ray
+            {
+                Origin = r.Origin,
+                Direction = -r.Direction
+            };
+        }
+
         public override string ToString()
         {
             return $"Ray[Origin={Origin}, Direction={Direction}]";

@@ -7,17 +7,35 @@ namespace Raytracer.World
     {
         public Point Position { get; set; }
         public double F { get; set; }
-        public Viewport Viewport { get; set; }
+        private Viewport _viewport { get; set; }
+
+        public Viewport Viewport
+        {
+            get
+            {
+                return _viewport;
+            }
+            set
+            {
+                _viewport = value;
+
+                _l = value.Width / 2.0;
+                _t = value.Height / 2.0;
+
+                _du = value.Width / (double)(value.Width - 1);
+                _dv = value.Height / (double)(value.Height - 1);
+            }
+        }
 
         public Vector U { get; }
         public Vector V { get; }
         public Vector W { get; }
 
-        private readonly double _l;
-        private readonly double _t;
+        private double _l;
+        private double _t;
 
-        private readonly double _du;
-        private readonly double _dv;
+        private double _du;
+        private double _dv;
 
         public Camera(Point position, double f, Viewport viewport, Vector g) : this(position, g)
         {
@@ -39,11 +57,6 @@ namespace Raytracer.World
             U = Up.Cross(W).Normalize();
             V = W.Cross(U);
 
-            _l = Viewport.Width / 2.0;
-            _t = Viewport.Height / 2.0;
-
-            _du = Viewport.Width / (double)(Viewport.Width - 1);
-            _dv = Viewport.Height / (double)(Viewport.Height - 1);
         }
 
         /// <summary>
@@ -52,24 +65,18 @@ namespace Raytracer.World
         /// <param name="i"></param>
         /// <param name="j"></param>
         /// <returns></returns>
-        public Point Pixel(int i, int j)
+        public Point Pixel(double i, double j)
         {
             return new Point(-_l + j * _du, _t - i * _dv, -F);
         }
 
-
-        public Ray Ray(int i, int j)
+        public Ray WorldRay(double i, double j)
         {
             return new Ray
             {
                 Origin = Position,
                 Direction = Pixel(i, j).Transform(TranformationMatrix()) - Position
             };
-        }
-
-        public Ray WorldRay(int i, int j)
-        {
-            return Ray(i, j);
         }
 
         public Matrix TranformationMatrix()

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Raytracer.World;
+using Color = Raytracer.World.Util.Color;
 
 namespace RayTracer
 {
@@ -34,25 +35,35 @@ namespace RayTracer
                     minutes = minutes % 60;
                     secs = secs % 60;
 
-                    Console.Write($"Rendering ... [{hours}:{minutes}:{secs}] {(double)i / height * 100}\r");
+                    var progress = (double)i / height * 100;
+
+                    Console.Write($"Rendering {Math.Truncate(progress * 100) / 100}% [{hours}:{minutes}:{secs}.{span % 1000}]          \r");
                 }
                 for (var j = 0; j < width; j++)
                 {
-                    var ray = scene.Camera.WorldRay(i, j);
-                    if (i == 250 & j == 400)
+                    if (i == 430 && j == 240)
                     {
-                        Console.Write("derp \r");
+                        Console.Write("Derp \r");
                     }
-                    var c = scene.ComputeColor(ray).ParseToInt();
+                    var color = new Color();
+                    for (var aai = 0; aai < Globals.ANTI_ALIASING; aai++)
+                    {
+                        for (var aaj = 0; aaj < Globals.ANTI_ALIASING; aaj++)
+                        {
+                            var ray = scene.Camera.WorldRay(i + (double) aai / Globals.ANTI_ALIASING, j + (double)aaj / Globals.ANTI_ALIASING);
 
-                    bitmap.SetPixel(j, i, Color.FromArgb(c.R, c.G, c.B));
+                            color = color + scene.ComputeColor(ray);
+                        }
+                    }
+                    var c = (color / (Globals.ANTI_ALIASING * Globals.ANTI_ALIASING)).ParseToInt();
+                    bitmap.SetPixel(j, i, System.Drawing.Color.FromArgb(c.R, c.G, c.B));
                 }
             }
             Console.WriteLine("\nRendering ... [Completed!]              ");
 
             bitmap.Save(outputFile, ImageFormat.Png);
 
-            Process myProcess = new Process {StartInfo = {FileName = outputFile}};
+            Process myProcess = new Process { StartInfo = { FileName = outputFile } };
             myProcess.Start();
         }
     }

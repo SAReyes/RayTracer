@@ -32,6 +32,11 @@
             return new Color(r.R * d, r.G * d, r.B * d);
         }
 
+        public static Color operator /(Color r, double d)
+        {
+            return new Color(r.R / d, r.G / d, r.B / d);
+        }
+
         public static Color operator +(Color r1, Color r2)
         {
             return new Color(r1.R + r2.R, r1.G + r2.G, r1.B + r2.B);

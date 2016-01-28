@@ -9,6 +9,10 @@ namespace Raytracer.World.Solids
         public Ray Definition { get; set; }
         public Vector Normal => Definition.Direction;
 
+        public double D => -(Definition.Origin.X * Normal.X +
+                             Definition.Origin.Y * Normal.Y +
+                             Definition.Origin.Z * Normal.Z);
+
         public override bool Intersected(Ray ray, out Intersection intersection)
         {
             intersection = new Intersection { Object = this, Normal = new Ray() };
@@ -29,7 +33,7 @@ namespace Raytracer.World.Solids
                 return false;
             }
 
-            var lambda = -(
+            var lambda = -(D +
                 Normal.X * ray.Origin.X +
                 Normal.Y * ray.Origin.Y +
                 Normal.Z * ray.Origin.Z) / prodEsc;
@@ -62,6 +66,24 @@ namespace Raytracer.World.Solids
         public override string ToString()
         {
             return $"Plane=[Definition={Definition}]";
+        }
+
+        protected bool Equals(Plane other)
+        {
+            return Equals(Definition, other.Definition);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Plane) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Definition != null ? Definition.GetHashCode() : 0);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Raytracer.World
 
         private Color ComputeColor(Ray ray, int recursion, bool inside = false)
         {
-            double maxDistance = Double.MaxValue;
+            var maxDistance = Double.MaxValue;
             Intersection intersection = null;
             foreach (var thing in Objects)
             {
@@ -33,43 +33,52 @@ namespace Raytracer.World
                 }
             }
 
-            // TODO: Return amb coef?
+            // No intersections, get the world color
             if (intersection == null) return Globals.WORLD_COLOR;
             if (!intersection.Intersected) return Globals.WORLD_COLOR;
 
-            if (intersection.Object.Translucent && recursion < Globals.MAX_RECURSION)
+            if (intersection.Object.Surface.Delta && recursion < Globals.MAX_RECURSION)
             {
                 //Translucent
                 double k_refr, k_refl;
+                var reflectionColor = new Color();
+                var refractionColor = new Color();
 
                 var reflectionRay = ray.Reflection(intersection.Normal);
 
-                var reflectionColor = ComputeColor(reflectionRay, recursion + 1, inside);
+                if (intersection.Object.Surface.ReflectanceIndex > Globals.EPSILON)
+                {
+                    reflectionColor = ComputeColor(reflectionRay, recursion + 1, inside);
+                }
 
                 var refractionRay = ray.Refraction(intersection.Normal, intersection.Object.Surface.RefractiveIndex, inside);
 
-                var refractionColor = ComputeColor(refractionRay, recursion + 1, !inside);
+                if (intersection.Object.Surface.RefractiveIndex > Globals.EPSILON)
+                {
+                    refractionColor = ComputeColor(refractionRay, recursion + 1, !inside);
+                }
 
-                ray.Fresnel(intersection.Normal, refractionRay, intersection.Object.Surface.RefractiveIndex, out k_refl, out k_refr, inside);
-
-                return reflectionColor * k_refr + refractionColor * k_refl;
+                return reflectionColor * intersection.Object.Surface.ReflectanceIndex +
+                       refractionColor * intersection.Object.Surface.SpecularCoef;
             }
 
-            //TODO: Should it be amb?
-            var color = new Color();
+            var color = intersection.Object.Surface.Color * Globals.AMB_COEF;
             foreach (var light in Lights)
             {
                 // Verify if there is any object between the intersecction point and this light
-                var shadowRay = new Ray
+                var lightRay = new Ray
                 {
-                    Direction = light.Position - intersection.Point,
-                    Origin = intersection.Point
+                    Direction = intersection.Point - light.Position,
+                    Origin = light.Position
                 };
                 var blocked = false;
                 foreach (var thing in Objects)
                 {
-                    Intersection dummy;
-                    if (thing.Intersected(shadowRay, out dummy))
+                    Intersection lightIntersection;
+                    var distanceHitLight = light.Position.Distance(intersection.Point);
+                    if (thing.Intersected(lightRay, out lightIntersection) &&
+                        Math.Abs(lightIntersection.Distance - distanceHitLight) > Globals.EPSILON &&
+                        lightIntersection.Distance < distanceHitLight)
                     {
                         blocked = true;
                         break;
@@ -78,11 +87,17 @@ namespace Raytracer.World
 
                 if (!blocked)
                 {
-                    Color diffuse = intersection.Object.Surface.Color *
-                                    intersection.Normal.Direction.Dot(shadowRay.Direction) *
-                                    light.IntensityFactor(intersection.Point);
-                    
-                    color = color + diffuse;
+                    var diffuse = intersection.Object.Surface.Color *
+                                  intersection.Normal.Direction.Dot((lightRay * -1).Direction);
+
+                    var reflection = lightRay.Reflection(intersection.Normal);
+
+                    var specular = Globals.LIGHT_COLOR *
+                                   intersection.Object.Surface.SpecularCoef *
+                                   Math.Pow(reflection.Direction.Dot(ray.Direction * -1),
+                                       intersection.Object.Surface.SpecularN);
+
+                    color = color + (diffuse + specular) * light.IntensityFactor(intersection.Point);
                 }
             }
 

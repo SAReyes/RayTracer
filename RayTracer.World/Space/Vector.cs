@@ -84,6 +84,11 @@ namespace Raytracer.World.Space
             return X * v.X + Y * v.Y + Z * v.Z;
         }
 
+        public double Dot(Ray r)
+        {
+            return Dot(r.Direction);
+        }
+
         public Vector Cross(Vector v)
         {
             return new Vector
