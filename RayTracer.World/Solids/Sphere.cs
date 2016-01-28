@@ -8,8 +8,7 @@ namespace Raytracer.World.Solids
     {
         public Point Center { get; set; }
         public double Radius { get; set; }
-
-        //TODO: Tolerance
+        
         public override bool Intersected(Ray ray, out Intersection intersection)
         {
             intersection = new Intersection { Object = this };

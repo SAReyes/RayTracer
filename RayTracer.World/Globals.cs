@@ -9,6 +9,6 @@ namespace Raytracer.World
         public static Color WORLD_COLOR = new Color(0.2, 0.2, 0.2);
         public static double AMB_COEF = 0.3;
         public static Color LIGHT_COLOR = new Color(1, 1, 1);
-        public static int ANTI_ALIASING = 1;
+        public static int ANTI_ALIASING = 4;
     }
 }

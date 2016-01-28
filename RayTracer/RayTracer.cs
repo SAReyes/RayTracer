@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Raytracer.World;
 using Color = Raytracer.World.Util.Color;
 
@@ -23,28 +19,20 @@ namespace RayTracer
 
             Bitmap bitmap = new Bitmap(width, height);
 
-            var start = DateTime.Now.Ticks;
+            var start = DateTime.Now;
             for (var i = 0; i < height; i++)
             {
                 if (i % 10 == 0)
                 {
-                    var span = DateTime.Now.Ticks - start;
-                    var secs = span / 1000;
-                    var minutes = secs / 60;
-                    var hours = minutes / 60;
-                    minutes = minutes % 60;
-                    secs = secs % 60;
+                    var span = DateTime.Now - start;
 
                     var progress = (double)i / height * 100;
 
-                    Console.Write($"Rendering {Math.Truncate(progress * 100) / 100}% [{hours}:{minutes}:{secs}.{span % 1000}]          \r");
+                    Console.Write($"Rendering {Math.Truncate(progress * 100) / 100}% [{span.Hours}:{span.Minutes}:{span.Seconds}.{span.Milliseconds}]          \r");
                 }
                 for (var j = 0; j < width; j++)
                 {
-                    if (i == 430 && j == 240)
-                    {
-                        Console.Write("Derp \r");
-                    }
+                    // Anti-aliasing por supermuestreo
                     var color = new Color();
                     for (var aai = 0; aai < Globals.ANTI_ALIASING; aai++)
                     {
@@ -59,12 +47,16 @@ namespace RayTracer
                     bitmap.SetPixel(j, i, System.Drawing.Color.FromArgb(c.R, c.G, c.B));
                 }
             }
-            Console.WriteLine("\nRendering ... [Completed!]              ");
+            var finished = DateTime.Now - start;
+            Console.WriteLine("Rendering ... [Completed!]              ");
 
             bitmap.Save(outputFile, ImageFormat.Png);
 
             Process myProcess = new Process { StartInfo = { FileName = outputFile } };
             myProcess.Start();
+            
+            Console.WriteLine($"Time expended: [{finished.Hours}:{finished.Minutes}:{finished.Seconds}.{finished.Milliseconds}]");
+            Console.ReadLine();
         }
     }
 }
